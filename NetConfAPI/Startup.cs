@@ -34,6 +34,10 @@ namespace NetConfAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NetConfAPI", Version = "v1" });
             });
+            services.AddCors(cfg => cfg.AddPolicy("CorsPolicy", builder => 
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +51,7 @@ namespace NetConfAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("CorsPolicy");
             app.UseRouting();
 
             app.UseAuthorization();

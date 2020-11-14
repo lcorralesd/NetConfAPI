@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetConfAPI.Data;
+using NetConfAPI.DTOs;
 using NetConfAPI.Entities;
 using SQLitePCL;
 using System;
@@ -24,13 +25,13 @@ namespace NetConfAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Category>>> GetCategories() => await _context.Categories
+        public async Task<ActionResult<List<CategoryDto>>> GetCategories() => await _context.Categories.Select(c => new CategoryDto(c.Id, c.Name, c.Description, c.Picture))
             .ToListAsync();
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories.Select(c => new CategoryDto(c.Id, c.Name, c.Description, c.Picture)).FirstOrDefaultAsync();
         }
 
         [HttpPost]
