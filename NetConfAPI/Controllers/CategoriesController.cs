@@ -31,7 +31,7 @@ namespace NetConfAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            return await _context.Categories.Select(c => new CategoryDto(c.Id, c.Name, c.Description, c.Picture)).FirstOrDefaultAsync();
+            return await _context.Categories.Select(c => new CategoryDto(c.Id, c.Name, c.Description, c.Picture)).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         [HttpPost]
