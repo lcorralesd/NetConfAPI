@@ -23,18 +23,33 @@ namespace NetConfAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Getproducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Getproducts()
         {
-            return await _context.products
-                .Include(x => x.Category)
+            return  await _context.products
+                .Select<Product, ProductDTO>(p => p)
                 .ToListAsync();
         }
 
+        // GET: api/Products
+        [HttpGet("FakeProducts")]
+        public ActionResult<List<ProductDTO>> GetFakeProducts()
+        {
+            List<ProductDTO> FakeProducts = new List<ProductDTO>();
+            for (int i = 1; i < 1000; i++)
+            {
+                FakeProducts.Add(new ProductDTO(i, $"Product{i}", 45, 100));
+            }
+            return FakeProducts;
+
+        }
+
+
+
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
-            var product = await _context.products.FindAsync(id);
+            ProductDTO product = await _context.products.FindAsync(id);
 
             if (product == null)
             {

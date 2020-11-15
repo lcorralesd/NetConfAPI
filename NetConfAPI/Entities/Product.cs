@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 namespace NetConfAPI.Entities
 {
+    public record ProductDTO(
+        int Id, string Name, decimal UnitPrice, int UnitsInStock);
     public class Product
     {
         public int Id { get; set; }
@@ -14,5 +16,10 @@ namespace NetConfAPI.Entities
 
         public Category Category { get; set; }
         public int CategoryId { get; set; }
+
+        public static implicit operator ProductDTO(Product p)
+        {
+            return new ProductDTO(p.Id, p.Name, p.UnitPrice, p.UnitsIntStock);
+        }
     }
 }
